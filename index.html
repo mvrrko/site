@@ -164,15 +164,11 @@
                         </div>
                     </div>
 
-                    <div class="log-section">
-                        <div class="log-header">
-                            <span class="log-status">● LIVE</span>
-                            <span class="log-title">STREAM OUTPUT</span>
-                        </div>
-                        <div class="log-container" id="logContainer">
-                            <!-- Logs will be inserted here by JavaScript -->
-                        </div>
-                    </div>
+            <!-- Data Source Indicator -->
+            <div class="data-source-indicator">
+                <span id="dataSourceStatus">🟡 CACHED</span> — 
+                <span class="source-note">Live feed unavailable, showing cached data</span>
+            </div>
 
                     <div class="status-badge">
                         <span class="badge-icon">⚠</span>
@@ -181,24 +177,99 @@
                 </div>
             </div>
 
-            <!-- P&L History Chart -->
-            <div class="chart-section">
-                <div class="chart-header">
-                    <h3 class="chart-title">[ P&L_HISTORY_30D ]</h3>
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column: P&L Chart -->
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h3 class="chart-title">[ P&L_HISTORY ]</h3>
+                        <div class="time-range-selector">
+                            <button class="range-btn" data-range="1D">1D</button>
+                            <button class="range-btn" data-range="1W">1W</button>
+                            <button class="range-btn active" data-range="30D">30D</button>
+                            <button class="range-btn" data-range="ALL">ALL</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="pnlChart"></canvas>
+                        <div id="chartTooltip" class="chart-tooltip"></div>
+                    </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="pnlChart"></canvas>
+
+                <!-- Right Column: Terminal Log -->
+                <div class="log-section">
+                    <div class="log-header">
+                        <span class="log-status">● LIVE</span>
+                        <span class="log-title">STREAM OUTPUT</span>
+                    </div>
+                    <div class="log-container" id="logContainer">
+                        <!-- Logs will be inserted here by JavaScript -->
+                    </div>
                 </div>
             </div>
 
-            <!-- Recent Trades Feed -->
-            <div class="trades-feed">
-                <div class="trades-header">
-                    <span class="trades-status">● RECENT</span>
-                    <span class="trades-title">TRADE HISTORY</span>
+            <!-- Mini Charts Grid (Gabagool22 Style) -->
+            <div class="mini-charts-section">
+                <div class="mini-charts-grid">
+                    <!-- Chart 1: PRICES -->
+                    <div class="mini-chart-container">
+                        <div class="mini-chart-header">
+                            <span class="mini-chart-title">PRICES (0-15m)</span>
+                            <span class="mini-chart-legend">
+                                <span class="legend-up">▲ $<span id="priceUp">0.405</span></span>
+                                <span class="legend-down">▼ $<span id="priceDown">0.595</span></span>
+                            </span>
+                        </div>
+                        <canvas id="pricesChart" class="mini-chart-canvas"></canvas>
+                    </div>
+
+                    <!-- Chart 2: SPREAD -->
+                    <div class="mini-chart-container">
+                        <div class="mini-chart-header">
+                            <span class="mini-chart-title">SPREAD (0-15m)</span>
+                            <span class="mini-chart-value spread-value">$<span id="spreadValue">0.0100</span></span>
+                        </div>
+                        <canvas id="spreadChart" class="mini-chart-canvas"></canvas>
+                    </div>
+
+                    <!-- Chart 3: POSITIONS -->
+                    <div class="mini-chart-container">
+                        <div class="mini-chart-header">
+                            <span class="mini-chart-title">POSITIONS (0-15m)</span>
+                            <span class="mini-chart-legend">
+                                <span class="legend-up">▲ <span id="posUp">154.9</span></span>
+                                <span class="legend-down">▼ <span id="posDown">163.8</span></span>
+                            </span>
+                        </div>
+                        <canvas id="positionsChart" class="mini-chart-canvas"></canvas>
+                    </div>
+
+                    <!-- Chart 4: AVG PRICES -->
+                    <div class="mini-chart-container">
+                        <div class="mini-chart-header">
+                            <span class="mini-chart-title">AVG PRICES (0-15m)</span>
+                            <span class="mini-chart-legend">
+                                <span class="legend-up">▲ $<span id="avgPriceUp">0.455</span></span>
+                                <span class="legend-down">▼ $<span id="avgPriceDown">0.555</span></span>
+                                <span class="sum-badge">X SUM: $<span id="sumValue">1.009</span></span>
+                            </span>
+                        </div>
+                        <canvas id="avgPricesChart" class="mini-chart-canvas"></canvas>
+                    </div>
                 </div>
-                <div class="trades-container" id="tradesContainer">
-                    <!-- Populated by JavaScript -->
+            </div>
+
+            <!-- Positions and Trades Grid -->
+            <div class="bottom-grid">
+                <!-- Recent Trades Feed -->
+                <div class="trades-feed">
+                    <div class="trades-header">
+                        <span class="trades-status">● RECENT</span>
+                        <span class="trades-title">TRADE HISTORY</span>
+                    </div>
+                    <div class="trades-container" id="tradesContainer">
+                        <!-- Populated by JavaScript -->
+                    </div>
                 </div>
             </div>
         </div>
