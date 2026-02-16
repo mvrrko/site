@@ -14,7 +14,7 @@ const logTemplates = [
     { timestamp: '', message: 'Order filled. Position opened.', class: 'log-success' },
     { timestamp: '', message: 'Position tracking enabled', class: 'log-info' },
     { timestamp: '', message: 'Price update: 0.52 (+10.6%)', class: 'log-success' },
-    { timestamp: '', message: 'Exit signal triggered', class: 'log-warning' },
+    { timestamp: '', message: 'Take-profit target reached — closing position', class: 'log-warning' },
     { timestamp: '', message: 'Placing order: SELL 50 shares @ 0.53', class: 'log-warning' },
     { timestamp: '', message: 'Order filled. Position closed.', class: 'log-success' },
     { timestamp: '', message: 'Trade closed. PNL: +$3.00', class: 'log-success' },
@@ -26,7 +26,7 @@ const logTemplates = [
     { timestamp: '', message: 'Price update: 0.58 (-6.5%)', class: 'log-warning' },
     { timestamp: '', message: 'Holding position...', class: 'log-info' },
     { timestamp: '', message: 'Price update: 0.71 (+14.5%)', class: 'log-success' },
-    { timestamp: '', message: 'Exit signal triggered', class: 'log-warning' },
+    { timestamp: '', message: 'Take-profit target reached — closing position', class: 'log-warning' },
     { timestamp: '', message: 'Placing order: SELL 75 shares @ 0.72', class: 'log-warning' },
     { timestamp: '', message: 'Order filled. Position closed.', class: 'log-success' },
     { timestamp: '', message: 'Trade closed. PNL: +$7.50', class: 'log-success' },
@@ -37,7 +37,7 @@ const logTemplates = [
     { timestamp: '', message: 'Order filled. Position opened.', class: 'log-success' },
     { timestamp: '', message: 'Price update: 0.44 (+12.8%)', class: 'log-success' },
     { timestamp: '', message: 'Trailing stop updated', class: 'log-info' },
-    { timestamp: '', message: 'Exit signal triggered', class: 'log-warning' },
+    { timestamp: '', message: 'Trailing stop hit — closing position', class: 'log-warning' },
     { timestamp: '', message: 'Placing order: SELL 60 shares @ 0.45', class: 'log-warning' },
     { timestamp: '', message: 'Order filled. Position closed.', class: 'log-success' },
     { timestamp: '', message: 'Trade closed. PNL: +$3.60', class: 'log-success' },
@@ -77,9 +77,9 @@ const recentTrades = [
 // Metric update configurations
 const metricConfigs = {
     pnl: {
-        base: 1247.83,
-        variance: 50,
-        format: (val) => val >= 0 ? `+$${val.toFixed(2)}` : `-$${Math.abs(val).toFixed(2)}`
+        base: 247183.50,
+        variance: 5000,
+        format: (val) => val >= 0 ? `+$${formatNumber(val.toFixed(2))}` : `-$${formatNumber(Math.abs(val).toFixed(2))}`
     },
     spread: {
         base: 0.023,
@@ -117,6 +117,7 @@ let startTime = Date.now();
 let pnlChartInstance = null;
 let currentTimeRange = '30D';
 let liveDataAvailable = false;
+let currentChartData = null;
 
 // Mini chart data storage
 let miniChartData = {
@@ -205,25 +206,25 @@ function updateStatsCards() {
     const biggestWin = document.getElementById('biggestWin');
     
     if (positionsValue) {
-        const variance = (Math.random() - 0.5) * 500;
-        const value = 11742.00 + variance;
+        const variance = (Math.random() - 0.5) * 5000;
+        const value = 87420.00 + variance;
         positionsValue.textContent = `$${formatNumber(value.toFixed(2))}`;
     }
     
     if (monthlyPnl) {
-        const variance = (Math.random() - 0.5) * 200;
-        const pnl = 4218.37 + variance;
+        const variance = (Math.random() - 0.5) * 3000;
+        const pnl = 42183.70 + variance;
         monthlyPnl.textContent = `+$${formatNumber(pnl.toFixed(2))}`;
     }
     
     if (allTimeTrades) {
         const variance = Math.floor((Math.random() - 0.5) * 10);
-        allTimeTrades.textContent = formatNumber(1247 + variance);
+        allTimeTrades.textContent = formatNumber(12470 + variance);
     }
     
     if (biggestWin) {
-        const variance = (Math.random() - 0.5) * 20;
-        biggestWin.textContent = `+$${(312.50 + variance).toFixed(2)}`;
+        const variance = (Math.random() - 0.5) * 200;
+        biggestWin.textContent = `+$${formatNumber((3125.00 + variance).toFixed(2))}`;
     }
 }
 
@@ -382,6 +383,7 @@ function initPnLChart() {
     
     const ctx = canvas.getContext('2d');
     const data = generatePnLData();
+    currentChartData = data;
     
     // Set canvas size
     const container = canvas.parentElement;
@@ -390,7 +392,7 @@ function initPnLChart() {
     
     const width = canvas.width;
     const height = canvas.height;
-    const padding = 40;
+    const padding = 50;
     
     // Clear canvas
     ctx.fillStyle = '#0a0a0a';
@@ -398,7 +400,7 @@ function initPnLChart() {
     
     // Find min and max for scaling
     const maxValue = Math.max(...data);
-    const minValue = 0;
+    const minValue = Math.min(...data);
     
     // Draw grid lines
     ctx.strokeStyle = '#1a1a1a';
@@ -413,11 +415,11 @@ function initPnLChart() {
         ctx.stroke();
         
         // Y-axis labels
-        const value = maxValue * (1 - i / 5);
+        const value = maxValue - (maxValue - minValue) * (i / 5);
         ctx.fillStyle = '#808080';
         ctx.font = '9px JetBrains Mono, monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(`$${value.toFixed(0)}`, padding - 10, y + 4);
+        ctx.fillText(`$${formatNumber(value.toFixed(0))}`, padding - 5, y + 4);
     }
     
     // Draw the line chart
@@ -595,36 +597,41 @@ async function updateLiveData() {
 
 function generatePnLDataForRange(range) {
     const data = [];
-    let points, baseGain, volatility;
+    let points, baseGain, volatility, startValue;
     
     switch(range) {
         case '1D':
             points = 24;
-            baseGain = 5;
-            volatility = 50;
+            baseGain = 800;
+            volatility = 3000;
+            startValue = 280000;
             break;
         case '1W':
             points = 7;
-            baseGain = 10;
-            volatility = 100;
+            baseGain = 3000;
+            volatility = 8000;
+            startValue = 250000;
             break;
         case '30D':
             points = 30;
-            baseGain = 20;
-            volatility = 150;
+            baseGain = 3500;
+            volatility = 6000;
+            startValue = 200000;
             break;
         case 'ALL':
             points = 90;
-            baseGain = 30;
-            volatility = 200;
+            baseGain = 2500;
+            volatility = 5000;
+            startValue = 100000;
             break;
         default:
             points = 30;
-            baseGain = 20;
-            volatility = 150;
+            baseGain = 3500;
+            volatility = 6000;
+            startValue = 200000;
     }
     
-    let currentValue = 0;
+    let currentValue = startValue;
     for (let i = 0; i < points; i++) {
         const change = (Math.random() - TREND_BIAS) * volatility + baseGain;
         currentValue += change;
@@ -663,35 +670,26 @@ function initChartTooltip() {
     
     if (!canvas || !tooltip || !indicator) return;
     
-    // Store chart data for consistent tooltip values
-    let cachedData = null;
-    let cachedRange = null;
-    
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         
         // Calculate which data point we're hovering over
-        const padding = 40;
+        const padding = 50;
         const dataWidth = canvas.width - 2 * padding;
         
-        if (x > padding && x < canvas.width - padding && y > padding && y < canvas.height - padding) {
-            // Regenerate data only if range changed
-            if (cachedRange !== currentTimeRange) {
-                cachedData = generatePnLDataForRange(currentTimeRange);
-                cachedRange = currentTimeRange;
-            }
+        if (x > padding && x < canvas.width - padding && y > padding && y < canvas.height - padding && currentChartData) {
+            const data = currentChartData;
+            const index = Math.min(Math.floor((x - padding) / dataWidth * data.length), data.length - 1);
             
-            const index = Math.min(Math.floor((x - padding) / dataWidth * cachedData.length), cachedData.length - 1);
-            
-            if (index >= 0 && index < cachedData.length) {
-                const value = cachedData[index];
-                const maxValue = Math.max(...cachedData);
-                const minValue = 0;
+            if (index >= 0 && index < data.length) {
+                const value = data[index];
+                const maxValue = Math.max(...data);
+                const minValue = Math.min(...data);
                 
                 // Calculate exact position of data point on chart
-                const dotX = padding + (canvas.width - 2 * padding) * (index / (cachedData.length - 1));
+                const dotX = padding + (canvas.width - 2 * padding) * (index / (data.length - 1));
                 const dotY = canvas.height - padding - (canvas.height - 2 * padding) * ((value - minValue) / (maxValue - minValue));
                 
                 // Scale to CSS pixels (account for canvas vs CSS sizing)
@@ -700,7 +698,7 @@ function initChartTooltip() {
                 
                 // Calculate date
                 const date = new Date();
-                date.setDate(date.getDate() - (cachedData.length - 1 - index));
+                date.setDate(date.getDate() - (data.length - 1 - index));
                 const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
                 
                 // Position indicator dot on the data point
@@ -709,7 +707,7 @@ function initChartTooltip() {
                 indicator.classList.add('visible');
                 
                 // Position tooltip next to indicator
-                tooltip.textContent = `${dateStr}: +$${value.toFixed(2)}`;
+                tooltip.textContent = `${dateStr}: +$${formatNumber(value.toFixed(0))}`;
                 tooltip.style.left = `${dotX * scaleX + 14}px`;
                 tooltip.style.top = `${dotY * scaleY - 14}px`;
                 tooltip.classList.add('visible');
@@ -930,6 +928,33 @@ function renderMiniCharts() {
 }
 
 // ============================================================================
+// POLYMARKET 15M PROGRESS BAR
+// ============================================================================
+
+function updateMarketProgressBar() {
+    const fill = document.getElementById('marketProgressFill');
+    const timeLeft = document.getElementById('marketTimeLeft');
+    if (!fill || !timeLeft) return;
+    
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    
+    // 15-minute windows: 0-15, 15-30, 30-45, 45-60
+    const windowStart = Math.floor(minutes / 15) * 15;
+    const elapsed = (minutes - windowStart) * 60 + seconds;
+    const total = 15 * 60; // 15 minutes in seconds
+    const remaining = total - elapsed;
+    
+    const pct = (elapsed / total) * 100;
+    fill.style.width = `${pct}%`;
+    
+    const remMin = Math.floor(remaining / 60);
+    const remSec = remaining % 60;
+    timeLeft.textContent = `${String(remMin).padStart(2, '0')}:${String(remSec).padStart(2, '0')}`;
+}
+
+// ============================================================================
 // SMOOTH SCROLL
 // ============================================================================
 
@@ -982,6 +1007,7 @@ function init() {
     updateTicker();
     updateMetrics();
     renderMiniCharts();
+    updateMarketProgressBar();
     
     // Try to fetch live data
     updateLiveData();
@@ -1028,6 +1054,11 @@ function init() {
         updateMiniChartData();
         renderMiniCharts();
     }, 3000 + Math.random() * 2000);
+    
+    // Update market progress bar every second
+    setInterval(() => {
+        updateMarketProgressBar();
+    }, 1000);
     
     // Try to fetch live data every 15 seconds
     setInterval(() => {
