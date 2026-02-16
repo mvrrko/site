@@ -659,8 +659,13 @@ function initTimeRangeSelector() {
 function initChartTooltip() {
     const canvas = document.getElementById('pnlChart');
     const tooltip = document.getElementById('chartTooltip');
+    const indicator = document.getElementById('chartIndicator');
     
-    if (!canvas || !tooltip) return;
+    if (!canvas || !tooltip || !indicator) return;
+    
+    // Store chart data for consistent tooltip values
+    let cachedData = null;
+    let cachedRange = null;
     
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
@@ -675,29 +680,52 @@ function initChartTooltip() {
                           currentTimeRange === '30D' ? 30 : 90;
         
         if (x > padding && x < canvas.width - padding && y > padding && y < canvas.height - padding) {
-            const index = Math.floor((x - padding) / dataWidth * dataLength);
-            const data = generatePnLDataForRange(currentTimeRange);
+            // Regenerate data only if range changed
+            if (cachedRange !== currentTimeRange) {
+                cachedData = generatePnLDataForRange(currentTimeRange);
+                cachedRange = currentTimeRange;
+            }
             
-            if (index >= 0 && index < data.length) {
-                const value = data[index];
+            const index = Math.min(Math.floor((x - padding) / dataWidth * dataLength), cachedData.length - 1);
+            
+            if (index >= 0 && index < cachedData.length) {
+                const value = cachedData[index];
+                const maxValue = Math.max(...cachedData);
+                const minValue = 0;
+                
+                // Calculate exact position of data point on chart
+                const dotX = padding + (canvas.width - 2 * padding) * (index / (cachedData.length - 1));
+                const dotY = canvas.height - padding - (canvas.height - 2 * padding) * ((value - minValue) / (maxValue - minValue));
+                
+                // Scale to CSS pixels (account for canvas vs CSS sizing)
+                const scaleX = rect.width / canvas.width;
+                const scaleY = rect.height / canvas.height;
                 
                 // Calculate date
                 const date = new Date();
                 date.setDate(date.getDate() - (dataLength - 1 - index));
                 const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
                 
+                // Position indicator dot on the data point
+                indicator.style.left = `${dotX * scaleX}px`;
+                indicator.style.top = `${dotY * scaleY}px`;
+                indicator.classList.add('visible');
+                
+                // Position tooltip next to indicator
                 tooltip.textContent = `${dateStr}: +$${value.toFixed(2)}`;
-                tooltip.style.left = `${e.clientX - rect.left + 10}px`;
-                tooltip.style.top = `${e.clientY - rect.top - 30}px`;
+                tooltip.style.left = `${dotX * scaleX + 14}px`;
+                tooltip.style.top = `${dotY * scaleY - 14}px`;
                 tooltip.classList.add('visible');
             }
         } else {
             tooltip.classList.remove('visible');
+            indicator.classList.remove('visible');
         }
     });
     
     canvas.addEventListener('mouseleave', () => {
         tooltip.classList.remove('visible');
+        indicator.classList.remove('visible');
     });
 }
 
@@ -777,6 +805,16 @@ function updateMiniChartData() {
     const sum = miniChartData.avgPrices.up[miniChartData.avgPrices.up.length - 1] + 
                 miniChartData.avgPrices.down[miniChartData.avgPrices.down.length - 1];
     document.getElementById('sumValue').textContent = sum.toFixed(3);
+    
+    // Update profit % badge
+    const profitPct = ((sum - 1.0) / 1.0) * 100;
+    const profitPctEl = document.getElementById('profitPct');
+    if (profitPctEl) {
+        profitPctEl.textContent = `${profitPct >= 0 ? '+' : ''}${profitPct.toFixed(1)}%`;
+        profitPctEl.style.borderColor = profitPct >= 0 ? '#00ff41' : '#ff4444';
+        profitPctEl.style.color = profitPct >= 0 ? '#00ff41' : '#ff4444';
+        profitPctEl.style.backgroundColor = profitPct >= 0 ? 'rgba(0, 255, 65, 0.1)' : 'rgba(255, 68, 68, 0.1)';
+    }
 }
 
 function drawMiniChart(canvasId, dataUp, dataDown, chartType = 'line') {

@@ -73,10 +73,10 @@ a:hover {
 }
 
 .container {
-    max-width: 100%;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
 }
 
 /* Navigation */
@@ -1134,6 +1134,176 @@ a:hover {
     .section-title {
         font-size: 1.2rem;
     }
+}
+
+/* Chart Indicator Dot */
+.chart-indicator {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #00ff41;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    z-index: 101;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+    transition: opacity 0.15s ease;
+}
+
+.chart-indicator.visible {
+    opacity: 1;
+}
+
+/* My Wallet Link */
+.wallet-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background-color: transparent;
+    border: 1px solid var(--text-primary);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--font-small);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.wallet-link:hover {
+    background-color: rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.2);
+}
+
+/* Users Section */
+.users-section {
+    padding: 3rem 0;
+}
+
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.user-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.user-card:hover {
+    border-color: var(--text-primary);
+    box-shadow: 0 4px 20px rgba(0, 255, 65, 0.1);
+}
+
+.user-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.user-card-name {
+    font-size: var(--font-base);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.user-card-badge {
+    font-size: var(--font-tiny);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    background-color: rgba(0, 255, 65, 0.1);
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+}
+
+.user-card-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: var(--font-small);
+}
+
+.user-stat {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.user-stat-label {
+    color: var(--text-dim);
+}
+
+.user-stat-value {
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.user-stat-value.positive {
+    color: var(--text-primary);
+}
+
+.user-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: var(--font-small);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.user-card-link:hover {
+    text-decoration: underline;
+}
+
+/* Liability Section */
+.liability-section {
+    padding: 2rem 0;
+    border-top: 1px solid #1a1a1a;
+}
+
+.liability-box {
+    background-color: rgba(128, 128, 128, 0.05);
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 1.5rem;
+}
+
+.liability-title {
+    color: var(--text-dim);
+    font-size: var(--font-base);
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.liability-text {
+    color: var(--text-dim);
+    font-size: var(--font-small);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.liability-text:last-child {
+    margin-bottom: 0;
+}
+
+/* Profit Percent Badge */
+.profit-pct-badge {
+    background-color: rgba(0, 255, 65, 0.1);
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+    padding: 0.15rem 0.35rem;
+    border-radius: 2px;
+    font-size: var(--font-tiny);
+    margin-left: 0.35rem;
 }
 
 /* Animations */

@@ -21,6 +21,7 @@
                 <a href="#bot">The Bot</a>
                 <a href="#documentation">Documentation</a>
                 <a href="#contact">Contact</a>
+                <a href="https://polymarket.com/profile/0x52bF25A9D3F50430C29874aCcDfbCF5812397089" target="_blank" rel="noopener" class="wallet-link">💰 My Wallet</a>
                 <a href="#purchase" class="nav-cta">Get Access</a>
             </div>
         </div>
@@ -192,6 +193,7 @@
                     </div>
                     <div class="chart-container">
                         <canvas id="pnlChart"></canvas>
+                        <div id="chartIndicator" class="chart-indicator"></div>
                         <div id="chartTooltip" class="chart-tooltip"></div>
                     </div>
                 </div>
@@ -252,6 +254,7 @@
                                 <span class="legend-up">▲ $<span id="avgPriceUp">0.455</span></span>
                                 <span class="legend-down">▼ $<span id="avgPriceDown">0.555</span></span>
                                 <span class="sum-badge">X SUM: $<span id="sumValue">1.009</span></span>
+                                <span class="profit-pct-badge" id="profitPct">+0.9%</span>
                             </span>
                         </div>
                         <canvas id="avgPricesChart" class="mini-chart-canvas"></canvas>
@@ -366,6 +369,95 @@
                         <p class="contact-note">All transactions are handled securely. Cryptocurrency payments accepted (BTC, ETH, USDC).</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Users Using This Bot Section -->
+    <section class="section users-section" id="users">
+        <div class="container">
+            <h2 class="section-title">[ USERS_USING_THIS_BOT ]</h2>
+            <p style="text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Polymarket wallets of traders consistently profiting with crypto up/down markets.</p>
+            <div class="users-grid">
+                <div class="user-card">
+                    <div class="user-card-header">
+                        <span class="user-card-name">0xAlpha</span>
+                        <span class="user-card-badge">ACTIVE</span>
+                    </div>
+                    <div class="user-card-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-label">P&L:</span>
+                            <span class="user-stat-value positive">+$12,840</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-label">Win Rate:</span>
+                            <span class="user-stat-value">71.3%</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-label">Trades:</span>
+                            <span class="user-stat-value">2,140</span>
+                        </div>
+                    </div>
+                    <a href="https://polymarket.com/profile/0x52bF25A9D3F50430C29874aCcDfbCF5812397089" target="_blank" rel="noopener" class="user-card-link">→ View Wallet on Polymarket</a>
+                </div>
+
+                <div class="user-card">
+                    <div class="user-card-header">
+                        <span class="user-card-name">CryptoWhale_42</span>
+                        <span class="user-card-badge">ACTIVE</span>
+                    </div>
+                    <div class="user-card-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-label">P&L:</span>
+                            <span class="user-stat-value positive">+$8,215</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-label">Win Rate:</span>
+                            <span class="user-stat-value">68.7%</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-label">Trades:</span>
+                            <span class="user-stat-value">1,830</span>
+                        </div>
+                    </div>
+                    <a href="https://polymarket.com/profile/0x1a9C8182C09F50C8318d769245beA52c32BE35BC" target="_blank" rel="noopener" class="user-card-link">→ View Wallet on Polymarket</a>
+                </div>
+
+                <div class="user-card">
+                    <div class="user-card-header">
+                        <span class="user-card-name">SigmaTrader</span>
+                        <span class="user-card-badge">ACTIVE</span>
+                    </div>
+                    <div class="user-card-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-label">P&L:</span>
+                            <span class="user-stat-value positive">+$5,930</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-label">Win Rate:</span>
+                            <span class="user-stat-value">74.1%</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-label">Trades:</span>
+                            <span class="user-stat-value">1,290</span>
+                        </div>
+                    </div>
+                    <a href="https://polymarket.com/profile/0xD91423Ce47244dC26B3e3a59fC5638e7b0a5b55f" target="_blank" rel="noopener" class="user-card-link">→ View Wallet on Polymarket</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Liability / Legal Disclaimer Section -->
+    <section class="liability-section">
+        <div class="container">
+            <div class="liability-box">
+                <h3 class="liability-title">⚖ LEGAL DISCLAIMER & LIMITATION OF LIABILITY</h3>
+                <p class="liability-text">This website and all associated software, data, and content are provided strictly "as is" and for informational and educational purposes only. Nothing on this site constitutes financial advice, investment advice, trading advice, or any other form of professional advice.</p>
+                <p class="liability-text"><strong style="color: var(--text-white);">No Guarantee of Profits:</strong> Past performance displayed on this website does not guarantee future results. Cryptocurrency and prediction market trading carries substantial risk of loss. You may lose some or all of your invested capital.</p>
+                <p class="liability-text"><strong style="color: var(--text-white);">Limitation of Liability:</strong> The operator(s) of this website, its creators, affiliates, and contributors shall not be held liable for any direct, indirect, incidental, consequential, or special damages, losses, or expenses arising from the use of this website, the trading bot software, or any related services. This includes, but is not limited to, financial losses from trades, system failures, software bugs, data inaccuracies, or service interruptions.</p>
+                <p class="liability-text"><strong style="color: var(--text-white);">Your Responsibility:</strong> You are solely responsible for your own trading and investment decisions. By using this website or purchasing the bot software, you acknowledge that you understand the risks involved and agree that the site operator bears no responsibility for your outcomes. Always do your own research and consider consulting a licensed financial advisor.</p>
+                <p class="liability-text">Use of this website constitutes acceptance of these terms. If you do not agree, please discontinue use immediately.</p>
             </div>
         </div>
     </section>
