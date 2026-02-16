@@ -675,9 +675,6 @@ function initChartTooltip() {
         // Calculate which data point we're hovering over
         const padding = 40;
         const dataWidth = canvas.width - 2 * padding;
-        const dataLength = currentTimeRange === '1D' ? 24 : 
-                          currentTimeRange === '1W' ? 7 : 
-                          currentTimeRange === '30D' ? 30 : 90;
         
         if (x > padding && x < canvas.width - padding && y > padding && y < canvas.height - padding) {
             // Regenerate data only if range changed
@@ -686,7 +683,7 @@ function initChartTooltip() {
                 cachedRange = currentTimeRange;
             }
             
-            const index = Math.min(Math.floor((x - padding) / dataWidth * dataLength), cachedData.length - 1);
+            const index = Math.min(Math.floor((x - padding) / dataWidth * cachedData.length), cachedData.length - 1);
             
             if (index >= 0 && index < cachedData.length) {
                 const value = cachedData[index];
@@ -703,7 +700,7 @@ function initChartTooltip() {
                 
                 // Calculate date
                 const date = new Date();
-                date.setDate(date.getDate() - (dataLength - 1 - index));
+                date.setDate(date.getDate() - (cachedData.length - 1 - index));
                 const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
                 
                 // Position indicator dot on the data point
