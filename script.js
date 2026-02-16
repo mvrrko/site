@@ -153,6 +153,7 @@ function formatNumber(num) {
     if (typeof num === 'string') {
         const parts = num.split('.');
         const intPart = parseInt(parts[0], 10);
+        if (isNaN(intPart)) return num;
         const formatted = intPart.toLocaleString('en-US');
         return parts.length > 1 ? `${formatted}.${parts[1]}` : formatted;
     }
@@ -722,7 +723,7 @@ function initChartTooltip() {
                 
                 // Position tooltip - flip to left side when near right edge
                 tooltip.textContent = `${dateStr}: +$${formatNumber(Math.round(value))}`;
-                const tooltipWidth = tooltip.offsetWidth || 100;
+                const tooltipWidth = tooltip.offsetWidth || 100; // fallback before first render
                 const containerWidth = container.offsetWidth;
                 
                 let tooltipLeft;
