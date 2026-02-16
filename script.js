@@ -614,6 +614,11 @@ function updateUptime() {
 // API INTEGRATION
 // ============================================================================
 
+// Helper function to check if response has content
+function isEmptyResponse(text) {
+    return !text || text.trim() === '';
+}
+
 async function fetchBinancePrice() {
     try {
         const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
@@ -621,8 +626,8 @@ async function fetchBinancePrice() {
         
         // Check if response has content before parsing
         const text = await response.text();
-        if (!text || text.trim() === '') {
-            console.log('Binance API returned empty response');
+        if (isEmptyResponse(text)) {
+            console.warn('Binance API returned empty response');
             return null;
         }
         
@@ -643,8 +648,8 @@ async function fetchPolymarketPrices() {
         
         // Check if response has content before parsing
         const text = await response.text();
-        if (!text || text.trim() === '') {
-            console.log('Polymarket API returned empty response');
+        if (isEmptyResponse(text)) {
+            console.warn('Polymarket API returned empty response');
             return null;
         }
         
