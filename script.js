@@ -99,6 +99,16 @@ const metricConfigs = {
 };
 
 // ============================================================================
+// CONFIGURATION CONSTANTS
+// ============================================================================
+
+const POSITIVE_BIAS = 0.3;
+const TREND_BIAS = 0.35;
+const VOLATILITY_RANGE = 150;
+const BASE_GAIN = 20;
+const INITIAL_UPTIME_DAYS = 14;
+
+// ============================================================================
 // STATE MANAGEMENT
 // ============================================================================
 
@@ -324,8 +334,8 @@ function addNewTrade() {
     const markets = ['BTC-UP-15M', 'BTC-DOWN-15M'];
     const market = markets[Math.floor(Math.random() * markets.length)];
     const price = 0.3 + Math.random() * 0.5;
-    const pnl = (Math.random() - 0.3) * 15;
-    const returnPct = (Math.random() - 0.3) * 20;
+    const pnl = (Math.random() - POSITIVE_BIAS) * 15;
+    const returnPct = (Math.random() - POSITIVE_BIAS) * 20;
     const win = pnl > 0;
     
     const now = new Date();
@@ -351,7 +361,7 @@ function generatePnLData() {
     
     for (let i = 0; i < 30; i++) {
         // Trend upward with realistic fluctuations
-        const change = (Math.random() - 0.35) * 150 + 20;
+        const change = (Math.random() - TREND_BIAS) * VOLATILITY_RANGE + BASE_GAIN;
         currentValue += change;
         data.push(Math.max(0, currentValue));
     }
@@ -499,7 +509,7 @@ function updateUptime() {
     if (!uptimeElement) return;
     
     const elapsed = Date.now() - startTime;
-    const days = Math.floor(elapsed / (1000 * 60 * 60 * 24)) + 14;
+    const days = Math.floor(elapsed / (1000 * 60 * 60 * 24)) + INITIAL_UPTIME_DAYS;
     const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) + 7;
     const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60)) + 32;
     
