@@ -1013,6 +1013,37 @@ a:hover {
     margin-top: 1rem;
 }
 
+/* Buy Button */
+.buy-btn {
+    display: inline-block;
+    padding: 1rem 3rem;
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border: 2px solid var(--text-primary);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 1.5rem;
+}
+
+.buy-btn:hover {
+    background-color: transparent;
+    color: var(--text-primary);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    text-shadow: 0 0 10px var(--text-primary);
+}
+
+/* Contact Content */
+.contact-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* Footer */
 .footer {
     background-color: var(--bg-secondary);

@@ -150,6 +150,13 @@ function formatTimestamp() {
 }
 
 function formatNumber(num) {
+    if (typeof num === 'string') {
+        const parts = num.split('.');
+        const intPart = parseInt(parts[0], 10);
+        if (isNaN(intPart)) return num;
+        const formatted = intPart.toLocaleString('en-US');
+        return parts.length > 1 ? `${formatted}.${parts[1]}` : formatted;
+    }
     return num.toLocaleString('en-US');
 }
 
@@ -255,7 +262,7 @@ function renderActivePositions() {
             <td>$${pos.entry.toFixed(2)}</td>
             <td>$${currentPrice.toFixed(2)}</td>
             <td>$${formatNumber(value.toFixed(0))}</td>
-            <td class="${pnl >= 0 ? 'positive' : 'negative'}">${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(0)}</td>
+            <td class="${pnl >= 0 ? 'positive' : 'negative'}">${pnl >= 0 ? '+' : ''}$${formatNumber(Math.abs(pnl).toFixed(0))}</td>
             <td class="${returnPct >= 0 ? 'positive' : 'negative'}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(1)}%</td>
         `;
         tbody.appendChild(row);
@@ -281,7 +288,7 @@ function renderClosedPositions() {
             <td>${formatNumber(pos.shares)}</td>
             <td>$${pos.entry.toFixed(2)}</td>
             <td>$${pos.exit.toFixed(2)}</td>
-            <td class="${pnl >= 0 ? 'positive' : 'negative'}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}</td>
+            <td class="${pnl >= 0 ? 'positive' : 'negative'}">${pnl >= 0 ? '+' : ''}$${formatNumber(pnl.toFixed(2))}</td>
             <td class="${returnPct >= 0 ? 'positive' : 'negative'}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(1)}%</td>
             <td>${pos.time}</td>
         `;
@@ -414,12 +421,12 @@ function initPnLChart() {
         ctx.lineTo(width - padding, y);
         ctx.stroke();
         
-        // Y-axis labels
+        // Y-axis labels - show whole numbers only
         const value = maxValue - (maxValue - minValue) * (i / 5);
         ctx.fillStyle = '#808080';
         ctx.font = '9px JetBrains Mono, monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(`$${formatNumber(value.toFixed(0))}`, padding - 5, y + 4);
+        ctx.fillText(`$${formatNumber(Math.round(value))}`, padding - 5, y + 4);
     }
     
     // Draw the line chart
@@ -679,6 +686,12 @@ function initChartTooltip() {
         const padding = 50;
         const dataWidth = canvas.width - 2 * padding;
         
+        // Account for container padding (0.75rem = ~12px)
+        const container = canvas.parentElement;
+        const containerStyle = getComputedStyle(container);
+        const containerPaddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
+        const containerPaddingTop = parseFloat(containerStyle.paddingTop) || 0;
+        
         if (x > padding && x < canvas.width - padding && y > padding && y < canvas.height - padding && currentChartData) {
             const data = currentChartData;
             const index = Math.min(Math.floor((x - padding) / dataWidth * data.length), data.length - 1);
@@ -701,15 +714,26 @@ function initChartTooltip() {
                 date.setDate(date.getDate() - (data.length - 1 - index));
                 const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
                 
-                // Position indicator dot on the data point
-                indicator.style.left = `${dotX * scaleX}px`;
-                indicator.style.top = `${dotY * scaleY}px`;
+                // Position indicator dot on the data point, offset by container padding
+                const indicatorLeft = containerPaddingLeft + dotX * scaleX;
+                const indicatorTop = containerPaddingTop + dotY * scaleY;
+                indicator.style.left = `${indicatorLeft}px`;
+                indicator.style.top = `${indicatorTop}px`;
                 indicator.classList.add('visible');
                 
-                // Position tooltip next to indicator
-                tooltip.textContent = `${dateStr}: +$${formatNumber(value.toFixed(0))}`;
-                tooltip.style.left = `${dotX * scaleX + 14}px`;
-                tooltip.style.top = `${dotY * scaleY - 14}px`;
+                // Position tooltip - flip to left side when near right edge
+                tooltip.textContent = `${dateStr}: +$${formatNumber(Math.round(value))}`;
+                const tooltipWidth = tooltip.offsetWidth || 100; // fallback before first render
+                const containerWidth = container.offsetWidth;
+                
+                let tooltipLeft;
+                if (indicatorLeft + tooltipWidth + 20 > containerWidth) {
+                    tooltipLeft = indicatorLeft - tooltipWidth - 14;
+                } else {
+                    tooltipLeft = indicatorLeft + 14;
+                }
+                tooltip.style.left = `${tooltipLeft}px`;
+                tooltip.style.top = `${indicatorTop - 14}px`;
                 tooltip.classList.add('visible');
             }
         } else {
