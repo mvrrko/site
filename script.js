@@ -618,7 +618,15 @@ async function fetchBinancePrice() {
     try {
         const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
         if (!response.ok) throw new Error('Binance API error');
-        const data = await response.json();
+        
+        // Check if response has content before parsing
+        const text = await response.text();
+        if (!text || text.trim() === '') {
+            console.log('Binance API returned empty response');
+            return null;
+        }
+        
+        const data = JSON.parse(text);
         apiDataCache.btcPrice = parseFloat(data.price);
         return apiDataCache.btcPrice;
     } catch (error) {
@@ -632,7 +640,15 @@ async function fetchPolymarketPrices() {
         // Try to fetch from Polymarket CLOB API
         const response = await fetch('https://clob.polymarket.com/prices');
         if (!response.ok) throw new Error('Polymarket API error');
-        const data = await response.json();
+        
+        // Check if response has content before parsing
+        const text = await response.text();
+        if (!text || text.trim() === '') {
+            console.log('Polymarket API returned empty response');
+            return null;
+        }
+        
+        const data = JSON.parse(text);
         // TODO: Parse specific BTC-UP-15M and BTC-DOWN-15M token prices from response
         // The data structure would need to be mapped to the correct token IDs
         apiDataCache.polymarketPrices = data;
