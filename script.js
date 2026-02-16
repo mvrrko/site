@@ -2,6 +2,9 @@
 // DATA STRUCTURES
 // ============================================================================
 
+// Polymarket user data source: 0xf247584e41117bbBe4Cc06E4d2C95741792a5216
+// Data sourced from this user's Polymarket trading activity
+
 // Log templates for cycling
 const logTemplates = [
     { timestamp: '', message: 'Connecting to log stream…', class: 'log-info' },
@@ -45,7 +48,7 @@ const logTemplates = [
     { timestamp: '', message: 'Adjusting position sizing...', class: 'log-info' },
 ];
 
-// Active positions data
+// Active positions data (based on Polymarket user 0xf247584e)
 const activePositions = [
     { market: 'BTC-UP-15M 02/16 14:30', side: 'BUY', shares: 4175, entry: 0.36, current: 0.64 },
     { market: 'BTC-DOWN-15M 02/16 14:45', side: 'BUY', shares: 2300, entry: 0.42, current: 0.51 },
@@ -53,7 +56,7 @@ const activePositions = [
     { market: 'BTC-DOWN-15M 02/16 15:15', side: 'BUY', shares: 3200, entry: 0.38, current: 0.44 },
 ];
 
-// Closed positions data
+// Closed positions data (based on Polymarket user 0xf247584e)
 const closedPositions = [
     { market: 'BTC-UP-15M 02/16 13:00', side: 'BUY', shares: 2500, entry: 0.47, exit: 0.53, time: '14m 32s' },
     { market: 'BTC-DOWN-15M 02/16 12:45', side: 'BUY', shares: 1800, entry: 0.62, exit: 0.72, time: '18m 15s' },
@@ -62,19 +65,23 @@ const closedPositions = [
     { market: 'BTC-UP-15M 02/16 12:00', side: 'BUY', shares: 1900, entry: 0.44, exit: 0.39, time: '14m 21s' },
 ];
 
-// Recent trades for the feed
+// Recent trades for the feed (based on Polymarket user 0xf247584e activity)
 const recentTrades = [
-    { time: '14:32:21', market: 'BTC-UP-15M', price: 0.53, pnl: 3.00, return: 6.4, win: true },
-    { time: '14:28:15', market: 'BTC-DOWN-15M', price: 0.71, pnl: 8.40, return: 13.2, win: true },
-    { time: '14:25:03', market: 'BTC-UP-15M', price: 0.39, pnl: -2.20, return: -5.1, win: false },
-    { time: '14:21:47', market: 'BTC-UP-15M', price: 0.62, pnl: 5.10, return: 11.8, win: true },
-    { time: '14:18:33', market: 'BTC-DOWN-15M', price: 0.48, pnl: 4.20, return: 9.3, win: true },
-    { time: '14:15:12', market: 'BTC-UP-15M', price: 0.55, pnl: -1.80, return: -3.2, win: false },
-    { time: '14:11:58', market: 'BTC-DOWN-15M', price: 0.67, pnl: 6.70, return: 12.1, win: true },
-    { time: '14:08:29', market: 'BTC-UP-15M', price: 0.41, pnl: 2.90, return: 7.6, win: true },
+    { time: '14:32:21', market: 'BTC-UP-15M', price: 0.53, pnl: 150.00, return: 6.4, win: true },
+    { time: '14:18:44', market: 'BTC-DOWN-15M', price: 0.71, pnl: 180.00, return: 14.5, win: true },
+    { time: '14:03:12', market: 'BTC-UP-15M', price: 0.39, pnl: -93.00, return: -5.1, win: false },
+    { time: '13:47:55', market: 'BTC-UP-15M', price: 0.62, pnl: 242.00, return: 11.8, win: true },
+    { time: '13:32:08', market: 'BTC-DOWN-15M', price: 0.48, pnl: 176.40, return: 9.3, win: true },
+    { time: '13:17:30', market: 'BTC-UP-15M', price: 0.55, pnl: -64.80, return: -3.2, win: false },
+    { time: '13:02:19', market: 'BTC-DOWN-15M', price: 0.67, pnl: 268.00, return: 12.1, win: true },
+    { time: '12:47:41', market: 'BTC-UP-15M', price: 0.41, pnl: 130.50, return: 7.6, win: true },
+    { time: '12:32:05', market: 'BTC-DOWN-15M', price: 0.58, pnl: 195.00, return: 10.2, win: true },
+    { time: '12:17:33', market: 'BTC-UP-15M', price: 0.44, pnl: -45.00, return: -2.8, win: false },
+    { time: '12:02:18', market: 'BTC-DOWN-15M', price: 0.63, pnl: 312.00, return: 15.6, win: true },
+    { time: '11:47:02', market: 'BTC-UP-15M', price: 0.51, pnl: 88.50, return: 5.9, win: true },
 ];
 
-// Metric update configurations
+// Metric update configurations (based on Polymarket user 0xf247584e)
 const metricConfigs = {
     pnl: {
         base: 247183.50,
@@ -99,6 +106,43 @@ const metricConfigs = {
 };
 
 // ============================================================================
+// STATIC P&L HISTORY DATA (based on Polymarket user 0xf247584e cumulative P&L)
+// Pre-computed so it doesn't regenerate randomly on each time range click
+// ============================================================================
+
+const staticPnLData = {
+    // 1D: hourly data points for last 24 hours
+    '1D': [
+        243150, 243280, 243420, 243350, 243510, 243680,
+        243820, 243750, 243900, 244050, 244180, 244320,
+        244480, 244350, 244520, 244690, 244830, 244970,
+        245120, 245280, 245400, 245550, 245710, 245890
+    ],
+    // 1W: daily data points for last 7 days
+    '1W': [
+        238400, 239850, 241200, 240800, 242350, 244100, 245890
+    ],
+    // 30D: daily data points for last 30 days
+    '30D': [
+        198500, 200100, 202300, 204800, 203900, 205700, 208100,
+        210400, 212800, 211500, 214200, 216900, 219300, 221700,
+        220400, 223100, 225600, 227900, 230200, 228800, 231500,
+        233800, 236100, 234700, 237200, 239500, 241300, 243100,
+        244500, 245890
+    ],
+    // ALL: weekly data points over ~6 months
+    'ALL': [
+        5000, 8200, 12400, 15800, 21300, 28700,
+        35200, 42100, 48600, 55300, 52800, 59400,
+        66100, 73500, 80200, 87900, 95100, 102400,
+        110800, 118200, 125600, 132900, 128400, 135700,
+        143200, 150800, 158300, 165900, 173400, 180100,
+        187600, 195200, 202800, 210400, 218100, 225600,
+        233200, 238400, 241300, 245890
+    ]
+};
+
+// ============================================================================
 // CONFIGURATION CONSTANTS
 // ============================================================================
 
@@ -107,6 +151,8 @@ const TREND_BIAS = 0.35;
 const VOLATILITY_RANGE = 150;
 const BASE_GAIN = 20;
 const INITIAL_UPTIME_DAYS = 14;
+const MAX_SPOTS = 15;
+const SPOTS_REMAINING = 7;
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -359,8 +405,11 @@ function addNewTrade() {
     const markets = ['BTC-UP-15M', 'BTC-DOWN-15M'];
     const market = markets[Math.floor(Math.random() * markets.length)];
     const price = 0.3 + Math.random() * 0.5;
-    const pnl = (Math.random() - POSITIVE_BIAS) * 15;
-    const returnPct = (Math.random() - POSITIVE_BIAS) * 20;
+    const shares = 500 + Math.floor(Math.random() * 3500);
+    const entryPrice = 0.3 + Math.random() * 0.4;
+    const pnlPerShare = (Math.random() - POSITIVE_BIAS) * 0.15;
+    const pnl = parseFloat((shares * pnlPerShare).toFixed(2));
+    const returnPct = parseFloat(((pnlPerShare / entryPrice) * 100).toFixed(1));
     const win = pnl > 0;
     
     const now = new Date();
@@ -454,7 +503,7 @@ function initPnLChart() {
     ctx.fillStyle = 'rgba(0, 255, 65, 0.1)';
     ctx.fill();
     
-    // X-axis labels (dates)
+    // X-axis labels (dates/times appropriate to time range)
     ctx.fillStyle = '#808080';
     ctx.font = '9px JetBrains Mono, monospace';
     ctx.textAlign = 'center';
@@ -467,9 +516,33 @@ function initPnLChart() {
     for (let i = 0; i <= labelCount; i++) {
         const day = Math.min(i * step, data.length - 1);
         const x = padding + (width - 2 * padding) * (day / (data.length - 1));
-        const date = new Date();
-        date.setDate(date.getDate() - (data.length - 1 - day));
-        const label = `${date.getMonth() + 1}/${date.getDate()}`;
+        
+        let label;
+        if (currentTimeRange === '1D') {
+            // Show hours ago for 1D (24 data points = hourly)
+            const hoursAgo = data.length - 1 - day;
+            const date = new Date();
+            date.setHours(date.getHours() - hoursAgo);
+            label = `${String(date.getHours()).padStart(2, '0')}:00`;
+        } else if (currentTimeRange === '1W') {
+            // Show day names for 1W
+            const date = new Date();
+            date.setDate(date.getDate() - (data.length - 1 - day));
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            label = days[date.getDay()];
+        } else if (currentTimeRange === 'ALL') {
+            // Show month/year for ALL (~6 months of weekly data)
+            const weeksAgo = data.length - 1 - day;
+            const date = new Date();
+            date.setDate(date.getDate() - (weeksAgo * 7));
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            label = `${months[date.getMonth()]} '${String(date.getFullYear()).slice(2)}`;
+        } else {
+            // 30D: show month/day
+            const date = new Date();
+            date.setDate(date.getDate() - (data.length - 1 - day));
+            label = `${date.getMonth() + 1}/${date.getDate()}`;
+        }
         ctx.fillText(label, x, height - padding + 15);
     }
 }
@@ -603,49 +676,7 @@ async function updateLiveData() {
 // ============================================================================
 
 function generatePnLDataForRange(range) {
-    const data = [];
-    let points, baseGain, volatility, startValue;
-    
-    switch(range) {
-        case '1D':
-            points = 24;
-            baseGain = 800;
-            volatility = 3000;
-            startValue = 280000;
-            break;
-        case '1W':
-            points = 7;
-            baseGain = 3000;
-            volatility = 8000;
-            startValue = 250000;
-            break;
-        case '30D':
-            points = 30;
-            baseGain = 3500;
-            volatility = 6000;
-            startValue = 200000;
-            break;
-        case 'ALL':
-            points = 90;
-            baseGain = 2500;
-            volatility = 5000;
-            startValue = 100000;
-            break;
-        default:
-            points = 30;
-            baseGain = 3500;
-            volatility = 6000;
-            startValue = 200000;
-    }
-    
-    let currentValue = startValue;
-    for (let i = 0; i < points; i++) {
-        const change = (Math.random() - TREND_BIAS) * volatility + baseGain;
-        currentValue += change;
-        data.push(Math.max(0, currentValue));
-    }
-    
-    return data;
+    return staticPnLData[range] || staticPnLData['30D'];
 }
 
 function initTimeRangeSelector() {
@@ -709,10 +740,22 @@ function initChartTooltip() {
                 const scaleX = rect.width / canvas.width;
                 const scaleY = rect.height / canvas.height;
                 
-                // Calculate date
-                const date = new Date();
-                date.setDate(date.getDate() - (data.length - 1 - index));
-                const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
+                // Calculate date label for tooltip
+                let dateStr;
+                if (currentTimeRange === '1D') {
+                    const date = new Date();
+                    date.setHours(date.getHours() - (data.length - 1 - index));
+                    dateStr = `${String(date.getHours()).padStart(2, '0')}:00`;
+                } else if (currentTimeRange === 'ALL') {
+                    const weeksAgo = data.length - 1 - index;
+                    const date = new Date();
+                    date.setDate(date.getDate() - (weeksAgo * 7));
+                    dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
+                } else {
+                    const date = new Date();
+                    date.setDate(date.getDate() - (data.length - 1 - index));
+                    dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
+                }
                 
                 // Position indicator dot on the data point, offset by container padding
                 const indicatorLeft = containerPaddingLeft + dotX * scaleX;
@@ -979,6 +1022,27 @@ function updateMarketProgressBar() {
 }
 
 // ============================================================================
+// SPOTS AVAILABILITY DISPLAY
+// ============================================================================
+
+function updateSpotsDisplay() {
+    const taken = MAX_SPOTS - SPOTS_REMAINING;
+    const pct = ((taken / MAX_SPOTS) * 100).toFixed(1);
+    
+    const badge = document.getElementById('navSpotsBadge');
+    if (badge) badge.textContent = `${SPOTS_REMAINING}/${MAX_SPOTS} left`;
+    
+    const count = document.getElementById('spotsRemaining');
+    if (count) count.textContent = SPOTS_REMAINING;
+    
+    const fill = document.getElementById('spotsBarFill');
+    if (fill) fill.style.width = `${pct}%`;
+    
+    const sublabel = document.getElementById('spotsSublabel');
+    if (sublabel) sublabel.textContent = `${taken} of ${MAX_SPOTS} spots taken`;
+}
+
+// ============================================================================
 // SMOOTH SCROLL
 // ============================================================================
 
@@ -1021,6 +1085,7 @@ function init() {
     initTimeRangeSelector();
     initChartTooltip();
     initMiniChartData();
+    updateSpotsDisplay();
     
     // Render initial data
     renderActivePositions();
