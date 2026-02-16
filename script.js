@@ -84,8 +84,8 @@ const recentTrades = [
 // Metric update configurations (based on Polymarket user 0xf247584e)
 const metricConfigs = {
     pnl: {
-        base: 247183.50,
-        variance: 5000,
+        base: 250500.00,  // Updated to match current PNL from chart
+        variance: 1000,   // Reduced variance - PNL shouldn't jump around wildly
         format: (val) => val >= 0 ? `+$${formatNumber(val.toFixed(2))}` : `-$${formatNumber(Math.abs(val).toFixed(2))}`
     },
     spread: {
@@ -100,7 +100,7 @@ const metricConfigs = {
     },
     winrate: {
         base: 73.2,
-        variance: 3,
+        variance: 0.5,   // Reduced variance - win rate is a historical stat that changes slowly
         format: (val) => `${val.toFixed(1)}%`
     }
 };
@@ -111,34 +111,36 @@ const metricConfigs = {
 // ============================================================================
 
 const staticPnLData = {
-    // 1D: hourly data points for last 24 hours
+    // 1D: hourly data points for last 24 hours - showing more realistic daily trading variance
     '1D': [
-        243150, 243280, 243420, 243350, 243510, 243680,
-        243820, 243750, 243900, 244050, 244180, 244320,
-        244480, 244350, 244520, 244690, 244830, 244970,
-        245120, 245280, 245400, 245550, 245710, 245890
+        244000, 244500, 243800, 244200, 243500, 244800,
+        245200, 244900, 245600, 246000, 245400, 246500,
+        247000, 246200, 247500, 248000, 247200, 248500,
+        249000, 248200, 249500, 250000, 249200, 250500
     ],
-    // 1W: daily data points for last 7 days
+    // 1W: daily data points for last 7 days - showing weekly progression
     '1W': [
-        238400, 239850, 241200, 240800, 242350, 244100, 245890
+        240000, 242000, 244000, 243500, 246000, 248000, 250500
     ],
     // 30D: daily data points for last 30 days
     '30D': [
-        198500, 200100, 202300, 204800, 203900, 205700, 208100,
-        210400, 212800, 211500, 214200, 216900, 219300, 221700,
-        220400, 223100, 225600, 227900, 230200, 228800, 231500,
-        233800, 236100, 234700, 237200, 239500, 241300, 243100,
-        244500, 245890
+        200000, 202000, 205000, 207000, 206000, 208000, 211000,
+        213000, 216000, 214000, 217000, 220000, 222000, 225000,
+        223000, 226000, 229000, 231000, 234000, 232000, 235000,
+        237000, 240000, 238000, 241000, 244000, 246000, 248000,
+        249000, 250500
     ],
-    // ALL: weekly data points over ~6 months
+    // ALL: weekly data points over ~6 months - showing long-term growth from zero
     'ALL': [
-        5000, 8200, 12400, 15800, 21300, 28700,
-        35200, 42100, 48600, 55300, 52800, 59400,
-        66100, 73500, 80200, 87900, 95100, 102400,
-        110800, 118200, 125600, 132900, 128400, 135700,
-        143200, 150800, 158300, 165900, 173400, 180100,
-        187600, 195200, 202800, 210400, 218100, 225600,
-        233200, 238400, 241300, 245890
+        0, 5000, 10000, 15000, 20000, 25000,
+        30000, 35000, 40000, 45000, 50000, 55000,
+        60000, 65000, 70000, 75000, 80000, 85000,
+        90000, 95000, 100000, 105000, 110000, 115000,
+        120000, 125000, 130000, 135000, 140000, 145000,
+        150000, 155000, 160000, 165000, 170000, 175000,
+        180000, 185000, 190000, 195000, 200000, 205000,
+        210000, 215000, 220000, 225000, 230000, 235000,
+        240000, 245000, 250500
     ]
 };
 
@@ -258,26 +260,31 @@ function updateStatsCards() {
     const allTimeTrades = document.getElementById('allTimeTrades');
     const biggestWin = document.getElementById('biggestWin');
     
+    // Only positions value should fluctuate slightly (based on active positions)
     if (positionsValue) {
-        const variance = (Math.random() - 0.5) * 5000;
+        const variance = (Math.random() - 0.5) * 2000; // Reduced variance
         const value = 87420.00 + variance;
         positionsValue.textContent = `$${formatNumber(value.toFixed(2))}`;
     }
     
+    // Monthly P&L should be fairly static (only updates once per trade)
     if (monthlyPnl) {
-        const variance = (Math.random() - 0.5) * 3000;
+        // Use a much smaller variance - only changes slightly over time
+        const variance = (Math.random() - 0.5) * 500;
         const pnl = 42183.70 + variance;
         monthlyPnl.textContent = `+$${formatNumber(pnl.toFixed(2))}`;
     }
     
+    // All-time trades should rarely change (only increments with new trades)
     if (allTimeTrades) {
-        const variance = Math.floor((Math.random() - 0.5) * 10);
-        allTimeTrades.textContent = formatNumber(12470 + variance);
+        // Static value - no variance
+        allTimeTrades.textContent = formatNumber(12470);
     }
     
+    // Biggest win should be completely static - it's the BIGGEST win ever
     if (biggestWin) {
-        const variance = (Math.random() - 0.5) * 200;
-        biggestWin.textContent = `+$${formatNumber((3125.00 + variance).toFixed(2))}`;
+        // Static value based on realistic Polymarket data
+        biggestWin.textContent = `+$${formatNumber((3125.00).toFixed(2))}`;
     }
 }
 
@@ -429,6 +436,31 @@ function addNewTrade() {
 // P&L CHART
 // ============================================================================
 
+// Helper function to calculate clean, round numbers for y-axis
+function calculateNiceScale(minValue, maxValue, numTicks = 6) {
+    const range = maxValue - minValue;
+    const rawStep = range / (numTicks - 1);
+    
+    // Calculate magnitude (power of 10)
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    
+    // Calculate nice step size (1, 2, 5, or 10 times the magnitude)
+    const normalizedStep = rawStep / magnitude;
+    let niceStep;
+    if (normalizedStep <= 1) niceStep = 1;
+    else if (normalizedStep <= 2) niceStep = 2;
+    else if (normalizedStep <= 5) niceStep = 5;
+    else niceStep = 10;
+    
+    niceStep *= magnitude;
+    
+    // Calculate nice min and max
+    const niceMin = Math.floor(minValue / niceStep) * niceStep;
+    const niceMax = Math.ceil(maxValue / niceStep) * niceStep;
+    
+    return { min: niceMin, max: niceMax, step: niceStep };
+}
+
 function generatePnLData() {
     return generatePnLDataForRange(currentTimeRange);
 }
@@ -455,8 +487,11 @@ function initPnLChart() {
     ctx.fillRect(0, 0, width, height);
     
     // Find min and max for scaling
-    const maxValue = Math.max(...data);
-    const minValue = Math.min(...data);
+    const dataMin = Math.min(...data);
+    const dataMax = Math.max(...data);
+    
+    // Calculate nice scale for y-axis
+    const { min: minValue, max: maxValue, step } = calculateNiceScale(dataMin, dataMax);
     
     // Draw grid lines
     ctx.strokeStyle = '#1a1a1a';
@@ -470,7 +505,7 @@ function initPnLChart() {
         ctx.lineTo(width - padding, y);
         ctx.stroke();
         
-        // Y-axis labels - show whole numbers only
+        // Y-axis labels - show clean round numbers
         const value = maxValue - (maxValue - minValue) * (i / 5);
         ctx.fillStyle = '#808080';
         ctx.font = '9px JetBrains Mono, monospace';
