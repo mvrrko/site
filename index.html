@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC Trading Bot | Polymarket Automated Trading</title>
+    <meta name="description" content="Advanced BTC trading bot for Polymarket 15-minute markets. Built with Rust and Python for pattern recognition and automated execution.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="terminal-prompt">~$</span> BTC_BOT
+            </div>
+            <div class="nav-links">
+                <a href="#bot">The Bot</a>
+                <a href="#documentation">Documentation</a>
+                <a href="#contact">Contact</a>
+                <a href="#purchase" class="nav-cta">Get Access</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Live Trading Dashboard -->
+    <section class="hero" id="bot">
+        <div class="container">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-close"></span>
+                        <span class="btn-minimize"></span>
+                        <span class="btn-maximize"></span>
+                    </div>
+                    <div class="terminal-title">trading_bot.log</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">╔══════════════════════════════════════╗<br>║      TRADING ENGINE v2.1.0           ║<br>╚══════════════════════════════════════╝</h1>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">PNL</div>
+                            <div class="metric-value pnl" id="pnl">+$1,247.83</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">SPREAD</div>
+                            <div class="metric-value" id="spread">0.023</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">OPEN_POSITIONS</div>
+                            <div class="metric-value" id="positions">3</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">WIN_RATE</div>
+                            <div class="metric-value win-rate" id="winrate">73.2%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">UPTIME</div>
+                            <div class="metric-value" id="uptime">14d 7h 32m</div>
+                        </div>
+                    </div>
+
+                    <div class="log-section">
+                        <div class="log-header">
+                            <span class="log-status">● LIVE</span>
+                            <span class="log-title">STREAM OUTPUT</span>
+                        </div>
+                        <div class="log-container" id="logContainer">
+                            <!-- Logs will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="status-badge">
+                        <span class="badge-icon">⚠</span>
+                        Live bot running on VPS — data may be delayed or partially obfuscated for security
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about-section" id="documentation">
+        <div class="container">
+            <h2 class="section-title">[ ABOUT_THE_BOT ]</h2>
+            <div class="content-box">
+                <p>This trading bot is built by analyzing and reverse-engineering trading patterns on <a href="https://polymarket.com/" target="_blank" rel="noopener">Polymarket</a>, the world's largest prediction market platform.</p>
+                
+                <p>Specifically designed to target the <strong>BTC Up/Down 15-minute</strong> binary options markets: <a href="https://polymarket.com/event/btc-updown-15m-1771264800" target="_blank" rel="noopener">polymarket.com/event/btc-updown-15m-1771264800</a></p>
+
+                <p>The dashboard above is powered by a <strong>live bot instance running on a dedicated VPS</strong>, executing real trades in real-time. The bot operates 24/7, continuously analyzing market conditions and executing trades based on statistical patterns and spread opportunities.</p>
+
+                <div class="warning-box">
+                    <span class="warning-icon">⚠</span>
+                    <strong>Important:</strong> For operational security and competitive advantage, live data displayed above may be delayed by 30-60 seconds and certain trade details may be partially obfuscated. Full transparency is available to verified purchasers.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features-section">
+        <div class="container">
+            <h2 class="section-title">[ PRODUCT_DETAILS ]</h2>
+            
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h3 class="feature-title">→ Strategy Highlights</h3>
+                    <ul class="feature-list">
+                        <li>Pattern recognition on 15-minute BTC binary options</li>
+                        <li>Statistical edge through spread analysis</li>
+                        <li>Automated entry/exit with risk management</li>
+                        <li>Real-time signal detection and execution</li>
+                        <li>Adaptive position sizing based on volatility</li>
+                        <li>Multiple fallback strategies for different market conditions</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3 class="feature-title">→ Tech Stack</h3>
+                    <ul class="feature-list">
+                        <li><strong>Rust</strong> — Core trading engine for performance and reliability</li>
+                        <li><strong>Python</strong> — Data analysis, signal generation, and ML models</li>
+                        <li><strong>PostgreSQL</strong> — Trade history and analytics</li>
+                        <li><strong>Redis</strong> — Real-time data caching</li>
+                        <li><strong>Docker</strong> — Containerized deployment</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3 class="feature-title">→ Package Contents</h3>
+                    <ul class="feature-list">
+                        <li>Full bot source code (Rust + Python)</li>
+                        <li>Comprehensive setup guide for VPS deployment</li>
+                        <li>Configuration templates and environment files</li>
+                        <li>API integration documentation</li>
+                        <li>Access to private updates channel (Discord/Telegram)</li>
+                        <li>30 days of implementation support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="disclaimer-box">
+                <h3 class="disclaimer-title">⚖ Risk Disclaimers</h3>
+                <p><strong>Trading involves substantial risk of loss.</strong> Past performance does not guarantee future results. The bot's historical performance shown above is for informational purposes only and should not be interpreted as a guarantee of future profitability.</p>
+                <p>Cryptocurrency markets are highly volatile and unpredictable. You should only trade with capital you can afford to lose. The bot may experience drawdowns, losses, or extended periods of poor performance. No automated trading system is foolproof.</p>
+                <p><strong>You are solely responsible for your trading decisions.</strong> This software is provided "as is" without warranty of any kind. By purchasing, you acknowledge that you understand the risks involved in algorithmic trading.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/Purchase Section -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">[ GET_ACCESS ]</h2>
+            <div class="content-box purchase-box" id="purchase">
+                <div class="purchase-content">
+                    <div class="price-display">
+                        <span class="price-label">ONE-TIME PURCHASE</span>
+                        <span class="price-amount">$2,499</span>
+                        <span class="price-note">Lifetime access • Full source code • Updates included</span>
+                    </div>
+                    <div class="contact-info">
+                        <p>To purchase or request more information:</p>
+                        <ul class="contact-list">
+                            <li><strong>Email:</strong> <a href="mailto:btcbot@proton.me">btcbot@proton.me</a></li>
+                            <li><strong>Telegram:</strong> <a href="https://t.me/btc_trading_bot" target="_blank" rel="noopener">@btc_trading_bot</a></li>
+                            <li><strong>Discord:</strong> btcbot#7234</li>
+                        </ul>
+                        <p class="contact-note">All transactions are handled securely. Cryptocurrency payments accepted (BTC, ETH, USDC).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 BTC Trading Bot. All rights reserved. Not affiliated with Polymarket.</p>
+            <p class="footer-note">This software is for educational and informational purposes. Trade responsibly.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
