@@ -151,6 +151,8 @@ const TREND_BIAS = 0.35;
 const VOLATILITY_RANGE = 150;
 const BASE_GAIN = 20;
 const INITIAL_UPTIME_DAYS = 14;
+const MAX_SPOTS = 15;
+const SPOTS_REMAINING = 7;
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -1020,6 +1022,27 @@ function updateMarketProgressBar() {
 }
 
 // ============================================================================
+// SPOTS AVAILABILITY DISPLAY
+// ============================================================================
+
+function updateSpotsDisplay() {
+    const taken = MAX_SPOTS - SPOTS_REMAINING;
+    const pct = ((taken / MAX_SPOTS) * 100).toFixed(1);
+    
+    const badge = document.getElementById('navSpotsBadge');
+    if (badge) badge.textContent = `${SPOTS_REMAINING}/${MAX_SPOTS} left`;
+    
+    const count = document.getElementById('spotsRemaining');
+    if (count) count.textContent = SPOTS_REMAINING;
+    
+    const fill = document.getElementById('spotsBarFill');
+    if (fill) fill.style.width = `${pct}%`;
+    
+    const sublabel = document.getElementById('spotsSublabel');
+    if (sublabel) sublabel.textContent = `${taken} of ${MAX_SPOTS} spots taken`;
+}
+
+// ============================================================================
 // SMOOTH SCROLL
 // ============================================================================
 
@@ -1062,6 +1085,7 @@ function init() {
     initTimeRangeSelector();
     initChartTooltip();
     initMiniChartData();
+    updateSpotsDisplay();
     
     // Render initial data
     renderActivePositions();
