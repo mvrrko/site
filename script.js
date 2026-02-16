@@ -551,7 +551,8 @@ async function fetchPolymarketPrices() {
         const response = await fetch('https://clob.polymarket.com/prices');
         if (!response.ok) throw new Error('Polymarket API error');
         const data = await response.json();
-        // This is a simplified example - actual implementation would parse the response
+        // TODO: Parse specific BTC-UP-15M and BTC-DOWN-15M token prices from response
+        // The data structure would need to be mapped to the correct token IDs
         apiDataCache.polymarketPrices = data;
         return data;
     } catch (error) {
@@ -705,7 +706,7 @@ function initChartTooltip() {
 // ============================================================================
 
 function initMiniChartData() {
-    // Initialize with 15 minutes of data (one data point per minute)
+    // Initialize with 15 minutes of data (15 data points, one per minute)
     const now = Date.now();
     for (let i = 0; i < 15; i++) {
         const timestamp = now - (14 - i) * 60000; // 60000 ms = 1 minute
