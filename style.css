@@ -12,6 +12,14 @@
     --accent-green: #00ff41;
     --accent-red: #ff4444;
     --shadow: rgba(0, 255, 65, 0.1);
+    
+    /* Reduced sizing */
+    --font-base: 0.75rem;
+    --font-small: 0.65rem;
+    --font-tiny: 0.6rem;
+    --padding-base: 0.5rem;
+    --padding-large: 0.75rem;
+    --margin-base: 0.5rem;
 }
 
 /* Reset and Base Styles */
@@ -65,9 +73,10 @@ a:hover {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 1rem;
 }
 
 /* Navigation */
@@ -145,12 +154,12 @@ a:hover {
     background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid #2a2a2a;
     border-radius: 4px;
-    padding: 0.75rem 1.5rem;
-    margin-bottom: 2rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
     box-shadow: 0 2px 10px rgba(0, 255, 65, 0.1);
 }
@@ -158,22 +167,22 @@ a:hover {
 .ticker-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.35rem;
 }
 
 .ticker-label {
     color: var(--text-dim);
-    font-size: 0.85rem;
+    font-size: var(--font-small);
 }
 
 .ticker-value {
     color: var(--text-white);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--font-base);
 }
 
 .ticker-change {
-    font-size: 0.85rem;
+    font-size: var(--font-small);
     font-weight: 600;
 }
 
@@ -193,16 +202,16 @@ a:hover {
 /* Summary Stats Cards */
 .stats-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .stat-card {
     background-color: rgba(0, 0, 0, 0.4);
     border: 1px solid #2a2a2a;
     border-radius: 4px;
-    padding: 1.25rem;
+    padding: 0.75rem;
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -213,14 +222,14 @@ a:hover {
 }
 
 .stat-label {
-    font-size: 0.75rem;
+    font-size: var(--font-tiny);
     color: var(--text-dim);
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
 }
 
 .stat-value {
-    font-size: 1.75rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-white);
 }
@@ -239,7 +248,7 @@ a:hover {
     border: 1px solid #1a1a1a;
     border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .tabs {
@@ -250,14 +259,14 @@ a:hover {
 
 .tab {
     flex: 1;
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1rem;
     background-color: transparent;
     border: none;
     color: var(--text-dim);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
+    font-size: var(--font-small);
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     cursor: pointer;
     transition: all 0.3s ease;
     border-bottom: 2px solid transparent;
@@ -289,7 +298,7 @@ a:hover {
 .positions-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.85rem;
+    font-size: var(--font-small);
 }
 
 .positions-table thead {
@@ -297,17 +306,17 @@ a:hover {
 }
 
 .positions-table th {
-    padding: 0.75rem;
+    padding: 0.5rem;
     text-align: left;
     color: var(--text-dim);
     font-weight: 600;
-    letter-spacing: 0.5px;
-    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    font-size: var(--font-tiny);
     border-bottom: 1px solid #1a1a1a;
 }
 
 .positions-table td {
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-bottom: 1px solid #1a1a1a;
     color: var(--text-white);
 }
@@ -334,20 +343,15 @@ a:hover {
 .chart-section {
     background-color: var(--bg-terminal);
     border: 1px solid #2a2a2a;
-    border-radius: 8px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    border-radius: 4px;
+    padding: 1rem;
     box-shadow: 0 8px 32px rgba(0, 255, 65, 0.1);
 }
 
-.chart-header {
-    margin-bottom: 1.5rem;
-}
-
 .chart-title {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     color: var(--text-primary);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-shadow: 0 0 10px var(--shadow);
 }
 
@@ -355,50 +359,50 @@ a:hover {
     background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid #1a1a1a;
     border-radius: 4px;
-    padding: 1.5rem;
-    min-height: 300px;
+    padding: 0.75rem;
+    min-height: 200px;
+    position: relative;
 }
 
 #pnlChart {
     width: 100% !important;
-    height: 300px !important;
+    height: 200px !important;
 }
 
 /* Recent Trades Feed */
 .trades-feed {
     background-color: var(--bg-terminal);
     border: 1px solid #2a2a2a;
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 2rem;
     box-shadow: 0 8px 32px rgba(0, 255, 65, 0.1);
 }
 
 .trades-header {
     background-color: #151515;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     border-bottom: 1px solid #1a1a1a;
 }
 
 .trades-status {
     color: var(--text-primary);
-    font-size: 0.85rem;
+    font-size: var(--font-small);
     animation: pulse 2s infinite;
 }
 
 .trades-title {
     color: var(--text-dim);
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    font-size: var(--font-small);
+    letter-spacing: 0.5px;
 }
 
 .trades-container {
-    height: 300px;
+    height: 200px;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 0.75rem;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -420,12 +424,12 @@ a:hover {
 }
 
 .trade-line {
-    font-size: 0.85rem;
-    line-height: 1.8;
-    margin-bottom: 0.25rem;
+    font-size: var(--font-small);
+    line-height: 1.6;
+    margin-bottom: 0.2rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.35rem;
 }
 
 .trade-time {
@@ -514,29 +518,191 @@ a:hover {
 }
 
 .terminal-body {
-    padding: 2rem;
+    padding: 1rem;
 }
+
+/* Dashboard Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Time Range Selector */
+.chart-header {
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-range-selector {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+}
+
+.range-btn {
+    background-color: transparent;
+    border: 1px solid #2a2a2a;
+    color: var(--text-dim);
+    padding: 0.25rem 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--font-small);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+}
+
+.range-btn:hover {
+    border-color: var(--text-primary);
+    color: var(--text-white);
+}
+
+.range-btn.active {
+    background-color: rgba(0, 255, 65, 0.1);
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+}
+
+/* Chart Tooltip */
+.chart-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--text-primary);
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-size: var(--font-small);
+    color: var(--text-white);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 100;
+}
+
+.chart-tooltip.visible {
+    opacity: 1;
+}
+
+/* Mini Charts Section */
+.mini-charts-section {
+    margin-bottom: 1rem;
+}
+
+.mini-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.mini-chart-container {
+    background-color: var(--bg-terminal);
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 0.75rem;
+    min-height: 150px;
+}
+
+.mini-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.mini-chart-title {
+    font-size: var(--font-small);
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.mini-chart-legend {
+    display: flex;
+    gap: 0.75rem;
+    font-size: var(--font-tiny);
+    align-items: center;
+}
+
+.mini-chart-value {
+    font-size: var(--font-small);
+    font-weight: 600;
+}
+
+.legend-up {
+    color: var(--text-primary);
+}
+
+.legend-down {
+    color: var(--accent-red);
+}
+
+.spread-value {
+    color: var(--text-primary);
+}
+
+.sum-badge {
+    background-color: rgba(255, 68, 68, 0.1);
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 0.15rem 0.35rem;
+    border-radius: 2px;
+    font-size: var(--font-tiny);
+}
+
+.mini-chart-canvas {
+    width: 100%;
+    height: 120px;
+    display: block;
+}
+
+/* Bottom Grid */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Data Source Indicator */
+.data-source-indicator {
+    background-color: rgba(255, 183, 0, 0.05);
+    border: 1px solid var(--text-amber);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--font-tiny);
+    color: var(--text-amber);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.source-note {
+    color: var(--text-dim);
+}
+
 
 /* Dashboard Header */
 .dashboard-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .dashboard-title {
-    font-size: 1rem;
+    font-size: 0.75rem;
     color: var(--text-primary);
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.3;
     text-shadow: 0 0 10px var(--shadow);
 }
 
 /* Metrics Grid */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
     background-color: rgba(0, 0, 0, 0.3);
     border: 1px solid #1a1a1a;
     border-radius: 4px;
@@ -547,14 +713,14 @@ a:hover {
 }
 
 .metric-label {
-    font-size: 0.75rem;
+    font-size: var(--font-tiny);
     color: var(--text-dim);
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.5px;
 }
 
 .metric-value {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-white);
 }
@@ -573,21 +739,20 @@ a:hover {
     border: 1px solid #1a1a1a;
     border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 1.5rem;
 }
 
 .log-header {
     background-color: #151515;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     border-bottom: 1px solid #1a1a1a;
 }
 
 .log-status {
     color: var(--text-primary);
-    font-size: 0.85rem;
+    font-size: var(--font-small);
     animation: pulse 2s infinite;
 }
 
@@ -598,16 +763,16 @@ a:hover {
 
 .log-title {
     color: var(--text-dim);
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    font-size: var(--font-small);
+    letter-spacing: 0.5px;
 }
 
 .log-container {
-    height: 400px;
+    height: 250px;
     overflow-y: auto;
-    padding: 1rem;
-    font-size: 0.85rem;
-    line-height: 1.8;
+    padding: 0.75rem;
+    font-size: var(--font-small);
+    line-height: 1.6;
 }
 
 .log-container::-webkit-scrollbar {
@@ -657,16 +822,16 @@ a:hover {
     background-color: rgba(255, 183, 0, 0.1);
     border: 1px solid var(--text-amber);
     border-radius: 4px;
-    padding: 0.75rem 1rem;
-    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--font-tiny);
     color: var(--text-amber);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.35rem;
 }
 
 .badge-icon {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 /* Sections */
