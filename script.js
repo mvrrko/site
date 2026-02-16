@@ -458,7 +458,7 @@ function calculateNiceScale(minValue, maxValue, numTicks = 6) {
     const niceMin = Math.floor(minValue / niceStep) * niceStep;
     const niceMax = Math.ceil(maxValue / niceStep) * niceStep;
     
-    return { min: niceMin, max: niceMax, step: niceStep };
+    return { min: niceMin, max: niceMax, stepSize: niceStep };
 }
 
 function generatePnLData() {
@@ -491,7 +491,7 @@ function initPnLChart() {
     const dataMax = Math.max(...data);
     
     // Calculate nice scale for y-axis
-    const { min: minValue, max: maxValue, step } = calculateNiceScale(dataMin, dataMax);
+    const { min: minValue, max: maxValue, stepSize } = calculateNiceScale(dataMin, dataMax);
     
     // Draw grid lines
     ctx.strokeStyle = '#1a1a1a';
