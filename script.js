@@ -749,7 +749,7 @@ function initMiniChartData() {
         
         miniChartData.avgPrices.timestamps.push(timestamp);
         miniChartData.avgPrices.up.push(0.43 + Math.random() * 0.05);
-        miniChartData.avgPrices.down.push(0.53 + Math.random() * 0.05);
+        miniChartData.avgPrices.down.push(0.49 + Math.random() * 0.05);
     }
 }
 
@@ -770,7 +770,7 @@ function updateMiniChartData() {
     
     miniChartData.avgPrices.timestamps.push(now);
     miniChartData.avgPrices.up.push(0.43 + Math.random() * 0.05);
-    miniChartData.avgPrices.down.push(0.53 + Math.random() * 0.05);
+    miniChartData.avgPrices.down.push(0.49 + Math.random() * 0.05);
     
     // Keep only last 15 minutes
     if (miniChartData.prices.timestamps.length > 15) {
@@ -803,8 +803,8 @@ function updateMiniChartData() {
                 miniChartData.avgPrices.down[miniChartData.avgPrices.down.length - 1];
     document.getElementById('sumValue').textContent = sum.toFixed(3);
     
-    // Update profit % badge
-    const profitPct = ((sum - 1.0) / 1.0) * 100;
+    // Update profit % badge — profit when combined avg price is below $1.00
+    const profitPct = ((1.0 - sum) / 1.0) * 100;
     const profitPctEl = document.getElementById('profitPct');
     if (profitPctEl) {
         profitPctEl.textContent = `${profitPct >= 0 ? '+' : ''}${profitPct.toFixed(1)}%`;
