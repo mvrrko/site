@@ -29,6 +29,30 @@
     <!-- Hero Section - Live Trading Dashboard -->
     <section class="hero" id="bot">
         <div class="container">
+            <!-- Live Ticker Bar -->
+            <div class="ticker-bar">
+                <div class="ticker-item">
+                    <span class="ticker-label">BTC:</span>
+                    <span class="ticker-value" id="btcPrice">$67,432.18</span>
+                    <span class="ticker-change positive" id="btcChange">▲ +1.2%</span>
+                </div>
+                <div class="ticker-separator">|</div>
+                <div class="ticker-item">
+                    <span class="ticker-label">BTC-UP-15M:</span>
+                    <span class="ticker-value" id="btcUpPrice">$0.52</span>
+                </div>
+                <div class="ticker-separator">|</div>
+                <div class="ticker-item">
+                    <span class="ticker-label">BTC-DOWN-15M:</span>
+                    <span class="ticker-value" id="btcDownPrice">$0.48</span>
+                </div>
+                <div class="ticker-separator">|</div>
+                <div class="ticker-item">
+                    <span class="ticker-label">SPREAD:</span>
+                    <span class="ticker-value" id="tickerSpread">0.023</span>
+                </div>
+            </div>
+
             <div class="terminal-window">
                 <div class="terminal-header">
                     <div class="terminal-buttons">
@@ -41,6 +65,26 @@
                 <div class="terminal-body">
                     <div class="dashboard-header">
                         <h1 class="dashboard-title">╔══════════════════════════════════════╗<br>║      TRADING ENGINE v2.1.0           ║<br>╚══════════════════════════════════════╝</h1>
+                    </div>
+                    
+                    <!-- Summary Stats Cards -->
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-label">POSITIONS VALUE</div>
+                            <div class="stat-value" id="positionsValue">$11,742.00</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">MONTHLY P&L</div>
+                            <div class="stat-value positive" id="monthlyPnl">+$4,218.37</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">ALL-TIME TRADES</div>
+                            <div class="stat-value" id="allTimeTrades">1,247</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">BIGGEST WIN</div>
+                            <div class="stat-value positive" id="biggestWin">+$312.50</div>
+                        </div>
                     </div>
                     
                     <div class="metrics-grid">
@@ -66,6 +110,60 @@
                         </div>
                     </div>
 
+                    <!-- Positions Tabs -->
+                    <div class="positions-section">
+                        <div class="tabs">
+                            <button class="tab active" data-tab="active">ACTIVE</button>
+                            <button class="tab" data-tab="closed">CLOSED</button>
+                        </div>
+                        
+                        <!-- Active Positions Table -->
+                        <div class="tab-content active" id="activeTab">
+                            <div class="table-wrapper">
+                                <table class="positions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Market</th>
+                                            <th>Side</th>
+                                            <th>Shares</th>
+                                            <th>Entry</th>
+                                            <th>Current</th>
+                                            <th>Value</th>
+                                            <th>P&L</th>
+                                            <th>Return</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="activePositions">
+                                        <!-- Populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Closed Positions Table -->
+                        <div class="tab-content" id="closedTab">
+                            <div class="table-wrapper">
+                                <table class="positions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Market</th>
+                                            <th>Side</th>
+                                            <th>Shares</th>
+                                            <th>Entry</th>
+                                            <th>Exit</th>
+                                            <th>P&L</th>
+                                            <th>Return</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="closedPositions">
+                                        <!-- Populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="log-section">
                         <div class="log-header">
                             <span class="log-status">● LIVE</span>
@@ -80,6 +178,27 @@
                         <span class="badge-icon">⚠</span>
                         Live bot running on VPS — data may be delayed or partially obfuscated for security
                     </div>
+                </div>
+            </div>
+
+            <!-- P&L History Chart -->
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h3 class="chart-title">[ P&L_HISTORY_30D ]</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pnlChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Trades Feed -->
+            <div class="trades-feed">
+                <div class="trades-header">
+                    <span class="trades-status">● RECENT</span>
+                    <span class="trades-title">TRADE HISTORY</span>
+                </div>
+                <div class="trades-container" id="tradesContainer">
+                    <!-- Populated by JavaScript -->
                 </div>
             </div>
         </div>
